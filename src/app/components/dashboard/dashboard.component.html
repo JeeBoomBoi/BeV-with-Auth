@@ -1,0 +1,52 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+</style>
+<div class="main-wrapper">
+  <nav class="navbar navbar-light d-flex">
+    <a href="/dashboard" class="navbar-brand mr-auto"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png" alt="MetaMask_Fox" width="60" height="60">Blockchain Voting</a>
+    <a class="nav-link" (click)="authService.SignOut()">
+      <i class="fas fa-sign-out-alt"></i>Log out
+    </a>
+    <!-- <div *ngIf="!(userData | async)"> -->
+      <button type="button" class="btn btn-secondary" (click)="showForm = !showForm">Create Poll</button>
+    <!-- </div> -->
+  </nav>
+
+  <section class="jumbotron text-center">
+    <h1>Voting Rethought</h1>
+    <p class="lead text-muted">
+      Powered By Blockchain
+    </p>
+  </section>
+
+   <app-poll-create *ngIf="showForm" (pollCreated)="handlePollCreate($event)"></app-poll-create>
+
+  <div class="container">
+    <div class='row justify-content-md-center'>
+
+      <div class='col-lg-4 col-md-4 col-12 poll-list'>
+        <app-poll *ngFor="let poll of polls | async"
+        [question]="poll.question"
+        [voted]="poll.voted"
+        [votes]="poll.results"
+        [pollImage]="poll.thumbnail"
+        (click)="setActivePoll(poll)"
+        ></app-poll>
+      </div>
+
+      <div class='col-lg-4 col-md-4 col-12'>
+        <app-poll-vote
+        *ngIf="activePoll"
+        [id]="activePoll.id"
+        [voted]="activePoll.voted"
+        [question]="activePoll.question"
+        [options]="activePoll.options"
+        [results]="activePoll.results"
+        (pollVoted)="handlePollVote($event)"
+      ></app-poll-vote>
+      </div>
+
+     <div>
+  </div>
+</div>
+
